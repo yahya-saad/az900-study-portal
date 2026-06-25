@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azure AZ-900 Exam Practice Portal</title>
+  <meta name="description" content="Study and prepare for the Microsoft Azure Fundamentals AZ-900 exam with sequential practice mode and timed exam simulations.">
+  
+  <!-- Modern Google Font: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+
+  <!-- File Protocol Warning Banner (CORS Safety Fallback) -->
+  <div id="protocol-warning-banner" class="warning-banner hide">
+    <div class="container warning-banner-content">
+      <span>⚠️ <strong>Local File Limitation:</strong> You opened this portal directly as a local file (file://). Browsers block fetching JSON data over local file systems. Please start the development server using <code>node server.js</code> in your terminal and visit <code>http://localhost:3000</code>.</span>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="container header-container">
+      <div class="logo-area" id="logo-btn">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="var(--color-primary)" />
+          <path d="M2 17L12 22L22 17" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M2 12L12 17L22 12" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span class="logo-title">Azure <span class="accent-text">AZ-900</span> Portal</span>
+      </div>
+      <div class="header-actions">
+        <button id="reset-progress-btn" class="btn btn-text btn-sm hide" title="Reset all progress and stored scores">Reset Progress</button>
+        <div class="stats-badge" id="header-stats">
+          <span class="stats-label">Passed:</span>
+          <span class="stats-val" id="header-pass-ratio">0%</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- View 1: Welcome & Configuration View -->
+      <section id="welcome-view" class="view active">
+        <div class="hero-section text-center">
+          <h1 class="hero-title">Prepare Confidently for <span class="gradient-text">AZ-900</span></h1>
+          <p class="hero-subtitle">Master Microsoft Azure Fundamentals. Select your preferred study mode below to begin.</p>
+        </div>
+
+        <div class="modes-grid">
+          <!-- Practice Mode Card -->
+          <div class="mode-card" id="practice-card">
+            <div class="mode-card-badge">Learn</div>
+            <div class="mode-icon-wrapper">
+              <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+              </svg>
+            </div>
+            <h2 class="mode-title">Practice Mode</h2>
+            <p class="mode-desc">Learn at your own pace without pressure. Reveal answers instantly, review details, and search/jump directly to questions.</p>
+            
+            <div class="mode-options">
+              <label class="option-toggle">
+                <input type="checkbox" id="practice-shuffle">
+                <span class="slider"></span>
+                <span class="option-label">Shuffle Questions</span>
+              </label>
+              
+              <div class="option-input-group">
+                <label for="practice-start-index">Start from Question:</label>
+                <input type="number" id="practice-start-index" min="1" max="485" value="1">
+              </div>
+            </div>
+            
+            <button id="start-practice-btn" class="btn btn-primary btn-block">Start Practicing</button>
+          </div>
+
+          <!-- Exam Mode Card -->
+          <div class="mode-card" id="exam-card">
+            <div class="mode-card-badge accent">Test</div>
+            <div class="mode-icon-wrapper">
+              <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </div>
+            <h2 class="mode-title">Exam Simulator</h2>
+            <p class="mode-desc">Simulate the real exam. Answer a randomized set of questions within the time limit. Get detailed feedback at the end.</p>
+            
+            <div class="mode-options">
+              <div class="option-select-group">
+                <label for="exam-q-count">Number of Questions:</label>
+                <select id="exam-q-count">
+                  <option value="30">30 Questions (Reference Standard)</option>
+                  <option value="65" selected>65 Questions (Official Exam)</option>
+                  <option value="100">100 Questions</option>
+                  <option value="485">All 485 Questions</option>
+                </select>
+              </div>
+
+              <div class="option-select-group">
+                <label for="exam-timer">Time Limit:</label>
+                <select id="exam-timer">
+                  <option value="30">30 Minutes</option>
+                  <option value="60" selected>60 Minutes (Standard)</option>
+                  <option value="90">90 Minutes</option>
+                  <option value="120">120 Minutes</option>
+                </select>
+              </div>
+            </div>
+            
+            <button id="start-exam-btn" class="btn btn-accent btn-block">Begin Exam</button>
+          </div>
+        </div>
+
+        <!-- Search Container -->
+        <div class="search-container card">
+          <h3 class="section-title">🔍 Search Practice Questions</h3>
+          <div class="search-input-wrapper">
+            <svg class="search-icon-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" id="search-input" class="search-bar" placeholder="Search 485 questions for topics (e.g., Cosmos DB, SLA, SaaS)...">
+          </div>
+          <div id="search-results-panel" class="search-results-panel hide">
+            <span id="search-results-text">Found 0 matching questions.</span>
+            <button id="start-search-practice-btn" class="btn btn-primary btn-sm">Practice Matching Questions</button>
+          </div>
+        </div>
+
+        <!-- Bookmarks Dashboard -->
+        <div class="dashboard-section card hide" id="bookmarks-container">
+          <div class="bookmarks-header-row">
+            <h3 class="section-title" style="margin-bottom:0;">⭐ Bookmarked Questions (<span id="bookmark-count">0</span>)</h3>
+            <button id="start-bookmarks-practice-btn" class="btn btn-primary btn-sm">Practice Bookmarked</button>
+          </div>
+        </div>
+
+        <!-- Dashboard / Recent Stats -->
+        <div class="dashboard-section card hide" id="recent-stats-container">
+          <div class="history-controls-header">
+            <h3 class="section-title">Your Exam Attempts History</h3>
+            <div class="history-filters-row">
+              <div class="filter-group">
+                <label for="history-date-filter">Filter Date:</label>
+                <input type="date" id="history-date-filter" class="history-filter-input">
+              </div>
+              <div class="filter-group">
+                <label for="history-page-size">Show:</label>
+                <select id="history-page-size" class="history-select-input">
+                  <option value="5" selected>5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="all">All</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="stats-list" id="stats-list">
+            <!-- Rendered dynamically -->
+          </div>
+          
+          <!-- Pagination Controls -->
+          <div class="pagination-footer" id="history-pagination">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- View 2: Practice View -->
+      <section id="practice-view" class="view">
+        <div class="quiz-container card">
+          <!-- Top Info Bar -->
+          <div class="info-bar">
+            <div class="info-left">
+              <span class="badge info-badge">Practice Mode</span>
+              <span class="question-tracker">Question <span id="practice-current-num">1</span> of <span id="practice-total-num">485</span></span>
+              <button id="practice-bookmark-btn" class="bookmark-btn" title="Bookmark this question">
+                <svg class="bookmark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </button>
+            </div>
+            <div class="info-right">
+              <button id="practice-reset-btn" class="btn btn-secondary btn-sm text-danger" style="margin-right: 12px; padding: 6px 12px; font-size: 0.8rem;" title="Reset practice session">Reset Session</button>
+              <label for="practice-jump-input">Jump to:</label>
+              <input type="number" id="practice-jump-input" class="jump-input" min="1" max="485" value="1">
+            </div>
+          </div>
+
+          <!-- Question Content -->
+          <div class="question-wrapper">
+            <h3 class="question-text" id="practice-question">Question text here?</h3>
+            <div class="options-container" id="practice-options">
+              <!-- Options loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="quiz-actions">
+            <div class="action-left">
+              <button id="practice-prev-btn" class="btn btn-secondary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Previous
+              </button>
+            </div>
+            <div class="action-center">
+              <button id="practice-reveal-btn" class="btn btn-primary">Reveal Answer</button>
+            </div>
+            <div class="action-right">
+              <button id="practice-next-btn" class="btn btn-secondary">
+                Next
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 3: Exam View -->
+      <section id="exam-view" class="view">
+        <!-- Exam Header / Status Board -->
+        <div class="exam-status-board">
+          <div class="status-item progress-item">
+            <span class="status-label">Progress</span>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="exam-progress-bar" style="width: 0%"></div>
+            </div>
+            <span class="progress-text" id="exam-progress-text">0 / 65 Answered</span>
+          </div>
+          <div class="status-item text-center">
+            <span class="status-label">Time Remaining</span>
+            <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+              <span class="status-value timer-alert" id="exam-timer-display">60:00</span>
+              <button id="exam-bookmark-btn" class="bookmark-btn" title="Bookmark this question">
+                <svg class="bookmark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="status-item text-right">
+            <button id="exam-submit-top-btn" class="btn btn-accent btn-sm">Submit Exam</button>
+          </div>
+        </div>
+
+        <div class="quiz-container card">
+          <!-- Question Content -->
+          <div class="question-wrapper">
+            <h3 class="question-text" id="exam-question">Question text here?</h3>
+            <div class="options-container" id="exam-options">
+              <!-- Options loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="quiz-actions">
+            <div class="action-left">
+              <button id="exam-skip-btn" class="btn btn-secondary">Skip Question</button>
+            </div>
+            <div class="action-right">
+              <button id="exam-next-btn" class="btn btn-accent" disabled>
+                Next Question
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 4: Results View -->
+      <section id="results-view" class="view">
+        <div class="results-container card">
+          <div class="results-header text-center">
+            <div class="badge" id="results-outcome-badge">Passed</div>
+            <h2 class="results-title">Exam Completed!</h2>
+            <p class="results-subtitle">Here is a summary of your performance.</p>
+          </div>
+
+          <div class="results-summary-grid">
+            <div class="result-stat-box">
+              <span class="stat-num" id="results-score">85%</span>
+              <span class="stat-lbl">Final Score</span>
+            </div>
+            <div class="result-stat-box">
+              <span class="stat-num" id="results-correct">55/65</span>
+              <span class="stat-lbl">Correct Answers</span>
+            </div>
+            <div class="result-stat-box">
+              <span class="stat-num" id="results-time">42:15</span>
+              <span class="stat-lbl">Time Taken</span>
+            </div>
+          </div>
+
+          <div class="results-actions text-center">
+            <button id="results-home-btn" class="btn btn-primary">Return to Main Menu</button>
+            <button id="results-retake-btn" class="btn btn-secondary">Retake Exam</button>
+          </div>
+
+          <div class="results-review-section">
+            <h3 class="review-title">Detailed Question Review</h3>
+            <div class="review-filters">
+              <button class="filter-btn active" data-filter="all">All (<span id="count-all">0</span>)</button>
+              <button class="filter-btn text-success" data-filter="correct">Correct (<span id="count-correct">0</span>)</button>
+              <button class="filter-btn text-danger" data-filter="incorrect">Incorrect/Skipped (<span id="count-incorrect">0</span>)</button>
+            </div>
+            <div class="review-list" id="results-review-list">
+              <!-- Question list rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div class="container footer-container">
+      <p>&copy; 2026 Azure AZ-900 Exam Portal. Built for high-speed offline-first studying.</p>
+      <p>Data parsed directly from Microsoft Azure Fundamentals Practice Exams.</p>
+    </div>
+  </footer>
+
+  <!-- Custom Modal Dialogs -->
+  <div id="custom-confirm-modal" class="modal-overlay hide">
+    <div class="modal-card">
+      <h3 class="modal-title" id="confirm-title">Confirm Action</h3>
+      <p class="modal-message" id="confirm-message">Are you sure you want to proceed?</p>
+      <div class="modal-actions">
+        <button id="confirm-cancel-btn" class="btn btn-secondary btn-sm">Cancel</button>
+        <button id="confirm-ok-btn" class="btn btn-accent btn-sm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="custom-alert-modal" class="modal-overlay hide">
+    <div class="modal-card">
+      <h3 class="modal-title" id="alert-title">Notification</h3>
+      <p class="modal-message" id="alert-message">Something happened.</p>
+      <div class="modal-actions">
+        <button id="alert-ok-btn" class="btn btn-primary btn-sm">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="src/app.js"></script>
+</body>
+</html>
